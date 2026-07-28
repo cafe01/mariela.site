@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Espaço reservado para o retrato da advogada">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8a6446"/>
+      <stop offset="1" stop-color="#3a2617"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#g)"/>
+  <g fill="none" stroke="#b09c88" stroke-width="7" opacity=".55">
+    <circle cx="400" cy="405" r="118"/>
+    <path d="M212 760c0-104 84-188 188-188s188 84 188 188" stroke-linecap="round"/>
+  </g>
+  <text x="400" y="880" text-anchor="middle" font-family="Inter, Helvetica, Arial, sans-serif" font-size="30" fill="#b3a294">retrato da advogada</text>
+  <text x="400" y="924" text-anchor="middle" font-family="Inter, Helvetica, Arial, sans-serif" font-size="23" fill="#8a7a6c">fundo neutro · sem escritório ao fundo</text>
+</svg>

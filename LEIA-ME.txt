@@ -1,0 +1,47 @@
+# Landing page — Direito do passageiro aéreo
+
+Página única, estática, sem build. HTML + CSS + JS próprios; a única dependência externa é a fonte (Google Fonts). Feita para ser destino de campanha de tráfego pago, e escrita dentro do Provimento nº 205/2021 da OAB.
+
+```
+site/
+├── index.html
+├── assets/css/style.css      design system + página
+├── assets/js/main.js         atribuição, eventos, consentimento
+└── assets/img/advogada.svg   espaço reservado do retrato
+```
+
+## Antes de publicar
+
+Tudo o que falta está **marcado em amarelo na própria página** (classe `.todo`). Ao final, uma busca por `todo` no HTML tem de voltar vazia.
+
+**Dados**
+- [ ] Nome do escritório, sobrenome da Mariela, inscrição na OAB, cidade/UF, endereço, e-mail
+- [ ] Número do WhatsApp em `assets/js/main.js` → `CONFIG.whatsapp` (formato `55` + DDD + número)
+- [ ] Domínio real em `index.html`: `canonical`, `og:url`, `og:image` e nos dois blocos de dados estruturados
+- [ ] Retrato substituindo `assets/img/advogada.svg` — fundo neutro, **sem** sala de reunião, estante ou fachada (a norma veda divulgar estrutura física)
+- [ ] Imagem de compartilhamento em `assets/img/og.jpg` (1200×630)
+
+**Ratificação jurídica da Mariela** — quatro pontos, todos marcados no texto:
+- [ ] Limites de tempo da Resolução ANAC nº 400 que se quer citar
+- [ ] Se o Juizado da comarca dispensa a presença do cliente até eventual audiência
+- [ ] Prazos: prescrição consumerista no voo doméstico, Convenção de Montreal no internacional
+- [ ] Se convém mencionar tempo médio de processo (a recomendação é não mencionar)
+
+**Regra que não se quebra:** nada de valores de indenização, percentual de êxito, "sem custas", "sem entrada", "só paga se ganhar", depoimentos, casos concretos ou a palavra "especialista".
+
+## Medição
+
+A camada de eventos já existe e é neutra: enquanto não houver tags instaladas, tudo cai no `dataLayer` e nada quebra. Para ligar, cole os identificadores em `loadTrackers()` (`assets/js/main.js`).
+
+- **Conversão:** `whatsapp_click` — `Contact` no Meta, conversão no Google Ads.
+- **Diagnóstico:** `situacao_selecionada`, `scroll_depth`, `checklist_engajada`, `documento_marcado`, `faq_aberta`, `pagina_carregada`.
+- **Atribuição:** `utm_*`, `gclid` e `fbclid` são capturados da URL e anexados como uma linha de referência à mensagem do WhatsApp — a origem do lead chega junto com o lead.
+- **LGPD:** as tags só sobem após o aceite no aviso de cookies.
+
+Para depurar no navegador: `__DEBUG_TRACKING__ = true` no console, e os eventos aparecem.
+
+## Publicação
+
+GitHub Pages, servindo esta pasta na branch principal. Domínio próprio e CNAME depois — não bloqueiam o site no ar.
+
+Localmente: `python3 -m http.server` dentro de `site/`.

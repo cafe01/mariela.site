@@ -1,0 +1,351 @@
+/* ==========================================================================
+   Direito do Passageiro — landing page de campanha
+   Design system + página. CSS único, sem framework: a página é o produto e
+   precisa carregar rápido no 4G do celular de quem acabou de sair do voo.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Tokens
+   -------------------------------------------------------------------------- */
+:root{
+  /* Cor — o marrom caramelo da logo do Celestino Advogados, do escuro da borda
+     ao mocha do campo; o tan do "S" virou o acento. */
+  --brand-900:#2a1b11;
+  --brand-800:#3a2617;
+  --brand-700:#4e341f;
+  --brand-600:#69472c;
+  --brand-500:#8a6446;
+  --brand-100:#ead9c8;
+  --brand-050:#faf4ee;
+
+  --accent-500:#b5875d;
+  --accent-600:#96693f;
+
+  --green-500:#25a35a;   /* ação: conversa */
+  --green-600:#1e8b4c;
+
+  --ink:#2b1e14;
+  --ink-soft:#5b4b40;
+  --ink-faint:#8b7a6d;
+  --line:#e6dcd2;
+  --line-soft:#f1eae2;
+  --white:#fff;
+
+  /* Tipografia */
+  --font-sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --font-serif:"Lora",Georgia,"Times New Roman",serif;
+
+  --step--1:clamp(.82rem,.79rem + .12vw,.89rem);
+  --step-0 :clamp(1rem,.96rem + .18vw,1.09rem);
+  --step-1 :clamp(1.15rem,1.08rem + .34vw,1.35rem);
+  --step-2 :clamp(1.38rem,1.24rem + .68vw,1.78rem);
+  --step-3 :clamp(1.66rem,1.42rem + 1.18vw,2.36rem);
+  --step-4 :clamp(2rem,1.6rem + 1.95vw,3.15rem);
+
+  /* Espaço */
+  --sp-1:.25rem; --sp-2:.5rem;  --sp-3:.75rem; --sp-4:1rem;
+  --sp-5:1.5rem; --sp-6:2rem;   --sp-7:3rem;   --sp-8:4rem;  --sp-9:6rem;
+
+  /* Forma */
+  --radius-s:.4rem; --radius-m:.75rem; --radius-l:1.25rem; --radius-pill:99rem;
+  --shadow-s:0 1px 2px rgba(42,27,17,.06),0 2px 6px rgba(42,27,17,.05);
+  --shadow-m:0 4px 12px rgba(42,27,17,.07),0 12px 28px rgba(42,27,17,.07);
+  --shadow-l:0 10px 24px rgba(42,27,17,.09),0 28px 60px rgba(42,27,17,.10);
+
+  --wrap:70rem;
+  --wrap-narrow:44rem;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+
+/* --------------------------------------------------------------------------
+   2. Reset e base
+   -------------------------------------------------------------------------- */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{
+  margin:0;background:var(--white);color:var(--ink);
+  font-family:var(--font-sans);font-size:var(--step-0);line-height:1.65;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+img,svg{max-width:100%;height:auto;display:block}
+a{color:var(--brand-500)}
+h1,h2,h3,h4{margin:0 0 .5em;line-height:1.18;letter-spacing:-.02em;font-weight:700}
+h1{font-size:var(--step-4)}
+h2{font-size:var(--step-3)}
+h3{font-size:var(--step-1)}
+p{margin:0 0 var(--sp-4)}
+ul{margin:0;padding:0}
+:focus-visible{outline:3px solid var(--accent-500);outline-offset:3px;border-radius:.2rem}
+
+.wrap{width:100%;max-width:var(--wrap);margin-inline:auto;padding-inline:var(--sp-5)}
+.wrap--narrow{max-width:var(--wrap-narrow)}
+.section{padding-block:var(--sp-8)}
+@media (min-width:48em){.section{padding-block:var(--sp-9)}}
+.section--alt{background:var(--brand-050)}
+.section--ink{background:var(--brand-800);color:#e8ded4}
+.section--ink h2{color:var(--white)}
+
+.eyebrow{
+  display:inline-block;font-size:var(--step--1);font-weight:600;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--brand-500);margin-bottom:var(--sp-3);
+}
+.section--ink .eyebrow{color:var(--accent-500)}
+.lede{font-size:var(--step-1);color:var(--ink-soft);max-width:38ch}
+.section-head{max-width:52ch;margin-bottom:var(--sp-7)}
+.section-head p{color:var(--ink-soft);margin-bottom:0}
+.center{text-align:center;margin-inline:auto}
+
+/* --------------------------------------------------------------------------
+   3. Botões
+   -------------------------------------------------------------------------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.6em;
+  font-family:inherit;font-size:var(--step-0);font-weight:600;line-height:1;
+  padding:1.05em 1.9em;border:0;border-radius:var(--radius-pill);
+  text-decoration:none;cursor:pointer;white-space:nowrap;
+  transition:transform .18s var(--ease),box-shadow .18s var(--ease),background-color .18s var(--ease);
+}
+.btn svg{width:1.25em;height:1.25em;flex:none}
+.btn--primary{background:var(--green-500);color:var(--white);box-shadow:0 6px 18px rgba(37,163,90,.32)}
+.btn--primary:hover{background:var(--green-600);transform:translateY(-2px);box-shadow:0 10px 26px rgba(37,163,90,.38)}
+.btn--ghost{background:transparent;color:var(--brand-500);border:1.5px solid var(--brand-100);padding-block:calc(1.05em - 1.5px)}
+.btn--ghost:hover{border-color:var(--brand-500);transform:translateY(-2px)}
+.btn--sm{font-size:var(--step--1);padding:.8em 1.4em}
+.btn--block{width:100%}
+@media (prefers-reduced-motion:reduce){.btn:hover{transform:none}}
+
+/* --------------------------------------------------------------------------
+   4. Cabeçalho
+   -------------------------------------------------------------------------- */
+.site-header{
+  position:sticky;top:0;z-index:50;background:rgba(255,255,255,.88);
+  backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid transparent;
+  transition:border-color .2s var(--ease),box-shadow .2s var(--ease);
+}
+.site-header.is-stuck{border-bottom-color:var(--line);box-shadow:var(--shadow-s)}
+.site-header .wrap{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-4);min-height:4.25rem}
+.brand{display:flex;align-items:center;gap:.65rem;text-decoration:none;color:var(--ink)}
+.brand__mark{width:2.1rem;height:2.1rem;flex:none;color:var(--brand-500)}
+.brand__name{font-family:var(--font-serif);font-size:1.05rem;font-weight:600;line-height:1.15;letter-spacing:-.01em}
+.brand__oab{display:block;font-family:var(--font-sans);font-size:.7rem;font-weight:500;letter-spacing:.06em;color:var(--ink-faint);text-transform:uppercase}
+.site-header .btn{display:none}
+@media (min-width:48em){.site-header .btn{display:inline-flex}}
+
+/* --------------------------------------------------------------------------
+   5. Hero
+   -------------------------------------------------------------------------- */
+.hero{
+  position:relative;isolation:isolate;overflow:hidden;
+  background:linear-gradient(165deg,var(--brand-900) 0%,var(--brand-700) 55%,var(--brand-500) 100%);
+  color:#f2e9e1;padding-block:var(--sp-8) var(--sp-9);
+}
+.hero::before{ /* malha de rotas aéreas, discreta */
+  content:"";position:absolute;inset:0;z-index:-1;opacity:.5;
+  background-image:radial-gradient(rgba(255,255,255,.13) 1px,transparent 1px);
+  background-size:26px 26px;
+  mask-image:radial-gradient(120% 90% at 78% 12%,#000 0%,transparent 68%);
+  -webkit-mask-image:radial-gradient(120% 90% at 78% 12%,#000 0%,transparent 68%);
+}
+.hero__glow{
+  position:absolute;z-index:-1;width:46rem;height:46rem;right:-14rem;top:-20rem;border-radius:50%;
+  background:radial-gradient(circle,rgba(193,154,117,.24) 0%,transparent 62%);pointer-events:none;
+}
+.hero .wrap{display:grid;gap:var(--sp-7);align-items:center}
+@media (min-width:60em){.hero .wrap{grid-template-columns:1.08fr .92fr;gap:var(--sp-8)}}
+.hero h1{color:var(--white);text-wrap:balance}
+.hero h1 em{font-family:var(--font-serif);font-style:italic;font-weight:500;color:var(--accent-500)}
+.hero__lede{font-size:var(--step-1);color:#d5c6b8;max-width:34ch}
+.hero__actions{display:flex;flex-wrap:wrap;gap:var(--sp-3);margin-top:var(--sp-5)}
+.hero__actions .btn--ghost{color:#e8ded4;border-color:rgba(255,255,255,.28)}
+.hero__actions .btn--ghost:hover{border-color:rgba(255,255,255,.7);background:rgba(255,255,255,.06)}
+.hero__note{display:flex;align-items:center;gap:.5rem;margin-top:var(--sp-4);font-size:var(--step--1);color:#b3a294}
+.hero__note svg{width:1rem;height:1rem;flex:none;color:var(--green-500)}
+
+/* Cartão de situações dentro do hero — atalho de autoidentificação */
+.hero__card{
+  background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.13);
+  border-radius:var(--radius-l);padding:var(--sp-5);backdrop-filter:blur(6px);
+}
+.hero__card h2{font-size:var(--step-0);letter-spacing:0;color:#d5c6b8;font-weight:600;margin-bottom:var(--sp-4)}
+.hero__picks{list-style:none;display:grid;gap:.55rem}
+.pick{
+  display:flex;align-items:center;gap:.85rem;width:100%;text-align:left;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#f4ece4;
+  border-radius:var(--radius-m);padding:.85rem 1rem;font:inherit;font-size:var(--step-0);
+  cursor:pointer;transition:background .16s var(--ease),transform .16s var(--ease),border-color .16s var(--ease);
+}
+.pick:hover{background:rgba(255,255,255,.11);border-color:rgba(224,163,58,.5);transform:translateX(3px)}
+.pick__icon{width:2.1rem;height:2.1rem;flex:none;color:var(--accent-500)}
+.pick__arrow{margin-left:auto;width:1.1rem;height:1.1rem;color:#a89887}
+
+/* Faixa de credenciais — o que a OAB permite dizer */
+.trustbar{background:var(--brand-900);color:#c0b0a2;padding-block:var(--sp-4);border-top:1px solid rgba(255,255,255,.07)}
+.trustbar ul{list-style:none;display:grid;gap:var(--sp-3);font-size:var(--step--1)}
+@media (min-width:48em){.trustbar ul{grid-template-columns:repeat(4,1fr);gap:var(--sp-5)}}
+.trustbar li{display:flex;align-items:center;gap:.6rem}
+.trustbar svg{width:1.15rem;height:1.15rem;flex:none;color:var(--accent-500)}
+
+/* --------------------------------------------------------------------------
+   6. Situações
+   -------------------------------------------------------------------------- */
+.cards{list-style:none;display:grid;gap:var(--sp-4)}
+@media (min-width:40em){.cards{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:64em){.cards{grid-template-columns:repeat(4,1fr);gap:var(--sp-5)}}
+.card{
+  background:var(--white);border:1px solid var(--line);border-radius:var(--radius-l);
+  padding:var(--sp-5);display:flex;flex-direction:column;
+  transition:transform .2s var(--ease),box-shadow .2s var(--ease),border-color .2s var(--ease);
+}
+.card:hover{transform:translateY(-4px);box-shadow:var(--shadow-m);border-color:var(--brand-100)}
+.card__icon{width:2.75rem;height:2.75rem;color:var(--brand-500);margin-bottom:var(--sp-4)}
+.card h3{margin-bottom:var(--sp-2)}
+.card p{color:var(--ink-soft);font-size:.97rem;margin:0}
+
+/* --------------------------------------------------------------------------
+   7. Como funciona — trilho de etapas
+   -------------------------------------------------------------------------- */
+.steps{list-style:none;display:grid;gap:var(--sp-6);counter-reset:step;position:relative}
+@media (min-width:56em){.steps{grid-template-columns:repeat(4,1fr);gap:var(--sp-5)}}
+.step{position:relative;counter-increment:step;padding-top:var(--sp-6)}
+.step::before{
+  content:counter(step,decimal-leading-zero);
+  position:absolute;top:0;left:0;font-family:var(--font-serif);font-size:1.6rem;font-weight:600;
+  color:var(--accent-500);line-height:1;
+}
+.step::after{ /* trilho pontilhado entre etapas */
+  content:"";position:absolute;top:.7rem;left:2.6rem;right:-1rem;height:1px;
+  background-image:linear-gradient(90deg,var(--line) 55%,transparent 0);background-size:9px 1px;
+  display:none;
+}
+@media (min-width:56em){.step:not(:last-child)::after{display:block}}
+.step h3{margin-bottom:var(--sp-2)}
+.step p{color:var(--ink-soft);font-size:.97rem;margin:0}
+
+/* --------------------------------------------------------------------------
+   8. Documentos — checklist interativa
+   -------------------------------------------------------------------------- */
+.docs-layout{display:grid;gap:var(--sp-6)}
+@media (min-width:56em){.docs-layout{grid-template-columns:1fr 1.05fr;gap:var(--sp-8);align-items:start}}
+.checklist{list-style:none;display:grid;gap:.5rem}
+.check{
+  display:flex;align-items:flex-start;gap:.9rem;padding:.9rem 1.1rem;cursor:pointer;
+  background:var(--white);border:1px solid var(--line);border-radius:var(--radius-m);
+  transition:border-color .16s var(--ease),background .16s var(--ease),box-shadow .16s var(--ease);
+}
+.check:hover{border-color:var(--brand-100);box-shadow:var(--shadow-s)}
+.check input{position:absolute;opacity:0;width:0;height:0}
+.check__box{
+  width:1.35rem;height:1.35rem;flex:none;margin-top:.15rem;border-radius:.4rem;
+  border:1.5px solid var(--line);display:grid;place-items:center;color:transparent;
+  transition:background .16s var(--ease),border-color .16s var(--ease),color .16s var(--ease);
+}
+.check__box svg{width:.85rem;height:.85rem}
+.check input:checked ~ .check__box{background:var(--green-500);border-color:var(--green-500);color:var(--white)}
+.check input:checked ~ .check__text{color:var(--ink-faint)}
+.check input:focus-visible ~ .check__box{outline:3px solid var(--accent-500);outline-offset:2px}
+.check__text{font-size:.97rem;line-height:1.5;transition:color .16s var(--ease)}
+.docs-aside{
+  background:var(--white);border:1px solid var(--line);border-left:3px solid var(--accent-500);
+  border-radius:var(--radius-m);padding:var(--sp-5);box-shadow:var(--shadow-s);
+}
+.docs-aside p:last-child{margin-bottom:0}
+.docs-counter{font-size:var(--step--1);color:var(--ink-faint);margin-top:var(--sp-4)}
+.docs-counter b{color:var(--brand-500)}
+
+/* --------------------------------------------------------------------------
+   9. Quem atende
+   -------------------------------------------------------------------------- */
+.bio{display:grid;gap:var(--sp-6);align-items:center}
+@media (min-width:56em){.bio{grid-template-columns:.8fr 1.2fr;gap:var(--sp-8)}}
+.bio__photo{
+  position:relative;border-radius:var(--radius-l);overflow:hidden;background:var(--brand-100);
+  aspect-ratio:4/5;box-shadow:var(--shadow-l);
+}
+.bio__photo img{width:100%;height:100%;object-fit:cover}
+.bio__photo figcaption{
+  position:absolute;inset:auto 0 0 0;padding:1.4rem 1.2rem .9rem;font-size:var(--step--1);
+  color:#fff;background:linear-gradient(transparent,rgba(42,27,17,.82));
+}
+.bio blockquote{
+  margin:0 0 var(--sp-5);padding-left:var(--sp-5);border-left:2px solid var(--accent-500);
+  font-family:var(--font-serif);font-size:var(--step-1);line-height:1.5;color:var(--brand-700);
+}
+.section--ink .bio blockquote{color:#f4ece4}
+.credentials{list-style:none;display:grid;gap:.7rem;margin-bottom:var(--sp-5)}
+.credentials li{display:flex;gap:.7rem;align-items:flex-start;font-size:.97rem}
+.credentials svg{width:1.15rem;height:1.15rem;flex:none;margin-top:.28rem;color:var(--accent-500)}
+
+/* --------------------------------------------------------------------------
+   10. FAQ
+   -------------------------------------------------------------------------- */
+.faq{max-width:var(--wrap-narrow);margin-inline:auto}
+.faq details{border:1px solid var(--line);border-radius:var(--radius-m);background:var(--white);margin-bottom:.6rem;overflow:hidden}
+.faq details[open]{border-color:var(--brand-100);box-shadow:var(--shadow-s)}
+.faq summary{
+  display:flex;align-items:center;justify-content:space-between;gap:var(--sp-4);
+  padding:1.1rem 1.3rem;font-weight:600;cursor:pointer;list-style:none;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{
+  content:"";width:.62rem;height:.62rem;flex:none;border-right:2px solid var(--brand-500);
+  border-bottom:2px solid var(--brand-500);transform:rotate(45deg) translateY(-25%);
+  transition:transform .2s var(--ease);
+}
+.faq details[open] summary::after{transform:rotate(-135deg) translateY(-25%)}
+.faq .faq__body{padding:0 1.3rem 1.2rem;color:var(--ink-soft)}
+.faq .faq__body p:last-child{margin-bottom:0}
+
+/* --------------------------------------------------------------------------
+   11. Chamada final e rodapé
+   -------------------------------------------------------------------------- */
+.finale{text-align:center}
+.finale .lede{margin-inline:auto;max-width:46ch;color:#d3c5b7}
+.finale .btn{margin-top:var(--sp-5)}
+.site-footer{background:var(--brand-900);color:#a8988a;font-size:var(--step--1);padding-block:var(--sp-7) var(--sp-6)}
+.site-footer a{color:#d3c5b7}
+.footer-grid{display:grid;gap:var(--sp-5);margin-bottom:var(--sp-6)}
+@media (min-width:48em){.footer-grid{grid-template-columns:1.4fr 1fr 1fr}}
+.site-footer h4{color:var(--white);font-size:var(--step--1);letter-spacing:.1em;text-transform:uppercase;margin-bottom:var(--sp-3)}
+.site-footer ul{list-style:none;display:grid;gap:.45rem}
+.legal{border-top:1px solid rgba(255,255,255,.1);padding-top:var(--sp-5);color:#8a7a6c;line-height:1.6}
+
+/* --------------------------------------------------------------------------
+   12. Barra fixa de ação no celular
+   -------------------------------------------------------------------------- */
+.mobile-cta{
+  position:fixed;left:0;right:0;bottom:0;z-index:60;padding:.7rem var(--sp-4) calc(.7rem + env(safe-area-inset-bottom));
+  background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-top:1px solid var(--line);
+  transform:translateY(110%);transition:transform .28s var(--ease);
+}
+.mobile-cta.is-visible{transform:none}
+@media (max-width:47.99em){body{padding-bottom:5.5rem}}
+@media (min-width:48em){.mobile-cta{display:none}}
+
+/* --------------------------------------------------------------------------
+   13. Aviso de cookies (LGPD) — consentimento antes do tracking
+   -------------------------------------------------------------------------- */
+.consent{
+  position:fixed;z-index:70;left:var(--sp-4);right:var(--sp-4);bottom:var(--sp-4);
+  max-width:34rem;background:var(--white);border:1px solid var(--line);border-radius:var(--radius-m);
+  box-shadow:var(--shadow-l);padding:var(--sp-5);font-size:var(--step--1);
+  transform:translateY(140%);transition:transform .3s var(--ease);
+}
+.consent.is-visible{transform:none}
+.consent p{margin-bottom:var(--sp-4);color:var(--ink-soft)}
+.consent__actions{display:flex;gap:.6rem;flex-wrap:wrap}
+@media (min-width:48em){.consent{bottom:var(--sp-5);left:var(--sp-5);right:auto}}
+
+/* --------------------------------------------------------------------------
+   14. Revelação ao rolar
+   -------------------------------------------------------------------------- */
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.reveal.is-in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+
+/* --------------------------------------------------------------------------
+   15. Marcações de pendência — REMOVER antes de publicar
+   -------------------------------------------------------------------------- */
+.todo{background:#fdf0d2;border-bottom:2px dotted #a4712c;padding:0 .2em;border-radius:.15em;color:#5b4b40}
+.section--ink .todo,.hero .todo,.site-footer .todo{background:rgba(224,163,58,.22);color:#f0cd8e;border-bottom-color:#c08a3e}
