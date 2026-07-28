@@ -17,7 +17,14 @@
       cancelado:  'Olá! Meu voo foi cancelado e gostaria de entender meus direitos.',
       preterido:  'Olá! Tive o embarque negado (overbooking) e gostaria de entender meus direitos.',
       bagagem:    'Olá! Tive problema com a minha bagagem e gostaria de entender meus direitos.'
-    }
+    },
+
+    /* Identificadores de medição. Vazio = tag não sobe, e a página segue
+       funcionando e empilhando eventos no dataLayer. Preencher aqui, e só aqui. */
+    ga4:      '',                          // G-XXXXXXXXXX      — GA4
+    googleAds: '',                         // AW-XXXXXXXXX      — Google Ads
+    adsConversao: '',                      // AW-XXXXXXXXX/abcD — rótulo da conversão whatsapp_click
+    metaPixel: ''                          // 123456789012345   — Meta Pixel
   };
 
   var $  = function (s, c) { return (c || document).querySelector(s); };
@@ -33,7 +40,13 @@
   function track(name, params) {
     var payload = params || {};
     window.dataLayer.push(Object.assign({ event: name }, payload));
-    if (typeof window.gtag === 'function') window.gtag('event', name, payload);
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', name, payload);
+      // a conversão única otimizada no Google Ads
+      if (name === 'whatsapp_click' && CONFIG.adsConversao) {
+        window.gtag('event', 'conversion', { send_to: CONFIG.adsConversao });
+      }
+    }
     if (typeof window.fbq === 'function') {
       // Contact é o evento padrão do Meta para início de conversa
       if (name === 'whatsapp_click') window.fbq('track', 'Contact', payload);
@@ -179,14 +192,35 @@
   var consent = $('.consent');
   var STORE_KEY = 'consent-analytics';
 
+  function carregaScript(src) {
+    var s = document.createElement('script');
+    s.async = true; s.src = src;
+    document.head.appendChild(s);
+  }
+
   function loadTrackers() {
-    // TODO: colar aqui as tags reais (GA4, Meta Pixel, Google Ads).
-    // Exemplo GA4:
-    // var s = document.createElement('script');
-    // s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX';
-    // document.head.appendChild(s);
-    // window.gtag = function(){ dataLayer.push(arguments); };
-    // gtag('js', new Date()); gtag('config', 'G-XXXXXXX');
+    // gtag serve GA4 e Google Ads pela mesma biblioteca
+    var gtagId = CONFIG.ga4 || CONFIG.googleAds;
+    if (gtagId) {
+      carregaScript('https://www.googletagmanager.com/gtag/js?id=' + gtagId);
+      window.gtag = function () { window.dataLayer.push(arguments); };
+      window.gtag('js', new Date());
+      if (CONFIG.ga4)       window.gtag('config', CONFIG.ga4);
+      if (CONFIG.googleAds) window.gtag('config', CONFIG.googleAds);
+    }
+
+    if (CONFIG.metaPixel) {
+      /* eslint-disable */
+      !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+      n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+      (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+      /* eslint-enable */
+      window.fbq('init', CONFIG.metaPixel);
+      window.fbq('track', 'PageView');
+    }
+
     track('consentimento_aceito', {});
   }
 
